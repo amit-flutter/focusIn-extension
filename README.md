@@ -16,15 +16,17 @@ Simply hides the distracting LinkedIn home feed and replaces it with a premium f
 
 <table>
   <tr>
-    <td align="center" width="50%"><b>🎥 FocusIn Features Walkthrough</b></td>
     <td align="center" width="50%"><b>⚙️ How to Install Guide</b></td>
+    <td align="center" width="50%"><b>🎥 FocusIn Features Walkthrough</b></td>
   </tr>
   <tr>
     <td>
-      <video src="images/output.mov" width="100%" autoplay loop muted playsinline></video>
+      <!-- <video src="images/output.mov" width="100%" autoplay loop muted playsinline></video> -->
+      <video src="https://github.com/user-attachments/assets/aaca3c9e-a65d-4572-b5a3-93ffb58ff8a7" width="100%" autoplay loop muted playsinline></video>
     </td>
     <td>
-      <video src="images/How-to-install.mov" width="100%" autoplay loop muted playsinline></video>
+      <video src="https://github.com/user-attachments/assets/8ed601f9-d5e1-4948-9096-3e1a2829323a" width="100%" autoplay loop muted playsinline></video>
+      <!-- <video src="images/How-to-install.mov" width="100%" autoplay loop muted playsinline></video> -->
     </td>
   </tr>
 </table>
@@ -46,8 +48,8 @@ Load the extension locally in 5 simple steps:
 ---
 
 <div align="center">
-  <h3>🛠️ Created with ❤️ in India</h3>
+  <h3>Crafted with ❤️ in India 🇮🇳</h3>
   <a href="https://amit-flutter.github.io/" target="_blank">
-    <img src="https://img.shields.io/badge/Explore%20My%20Portfolio-0284c7?style=for-the-badge&logo=flutter&logoColor=white" alt="Portfolio Badge" />
+    <img src="https://img.shields.io/badge/Explore%20My%20Portfolio%20(amit.flutter)-0284c7?style=for-the-badge&logo=flutter&logoColor=white" alt="Portfolio Badge" />
   </a>
 </div>
