@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusIn Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b1329;
+      --card-bg: rgba(26, 38, 57, 0.65);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #06b6d4;
+      --primary-hover: #06f2d4;
+      --accent: #3b82f6;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      --font-family: 'Outfit', -apple-system, sans-serif;
+    }
+
+    /* Light Theme overrides for the popup */
+    body.theme-light {
+      --bg-color: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(14, 165, 233, 0.2);
+      --text-color: #0f172a;
+      --text-muted: #475569;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #2563eb;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      width: 280px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-family);
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header Styling */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+    }
+    body.theme-light .header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand img {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 6px var(--primary));
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    body.theme-light .brand h1 {
+      background: linear-gradient(135deg, #0f172a 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .version {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 20px;
+    }
+    body.theme-light .version {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border-radius: 8px;
+      padding: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--primary);
+    }
+    body.theme-light .theme-toggle-btn {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.theme-light .theme-toggle-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      border-color: var(--primary);
+    }
+
+    /* Card styling */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);
+    }
+    body.theme-light .card:hover {
+      border-color: rgba(14, 165, 233, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(14, 165, 233, 0.08);
+    }
+
+    /* Toggle row */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toggle-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .toggle-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Beautiful Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #334155;
+      transition: .4s;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    body.theme-light .slider {
+      background-color: #cbd5e1;
+      border-color: rgba(0,0,0,0.05);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+    }
+    body.theme-light input:checked + .slider {
+      box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Stats display */
+    .stats-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    body.theme-light .stat-box {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-hover);
+      text-shadow: 0 0 8px rgba(6, 242, 212, 0.3);
+    }
+    body.theme-light .stat-val {
+      color: var(--primary);
+      text-shadow: none;
+    }
+
+    .stat-lbl {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Quotes and Motivations */
+    .quotes-panel {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text-muted);
+      font-style: italic;
+      border-left: 3px solid var(--primary);
+      padding-left: 10px;
+      margin-top: 4px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--accent) 0%, #1e40af 100%);
+      color: white !important;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      box-sizing: border-box;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+      filter: brightness(1.1);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      color: var(--text-color) !important;
+    }
+    body.theme-light .btn-secondary {
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      border-color: var(--primary);
+      color: var(--primary-hover) !important;
+    }
+    body.theme-light .btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--primary) !important;
+    }
+
+    /* Footer Credits */
+    .footer-credits {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+    }
+    body.theme-light .footer-credits {
+      border-top-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .footer-credits a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer-credits a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand">
+        <img src="icons/icon.svg" alt="FocusIn Logo">
+        <h1>FocusIn</h1>
+      </div>
+      <div class="header-controls">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <!-- Sun Icon -->
+          <svg class="sun-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <!-- Moon Icon -->
+          <svg class="moon-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="version">v1.2</div>
+      </div>
+    </div>
+
+    <!-- Power Control Card -->
+    <div class="card">
+      <div class="toggle-row">
+        <div class="toggle-label">
+          <span class="toggle-title">Feed Shield</span>
+          <span id="status-text" class="toggle-desc">Shielding active</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-shield" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Performance Stats Card -->
+    <div class="card">
+      <div class="stats-container">
+        <div class="stat-box">
+          <div id="stat-evaded" class="stat-val">0</div>
+          <div class="stat-lbl">Evaded</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-score" class="stat-val">0</div>
+          <div class="stat-lbl">Focus Score</div>
+        </div>
+      </div>
+      <div id="popup-quote" class="quotes-panel">
+        "Opportunities don't happen, you create them."
+      </div>
+    </div>
+
+    <!-- Quick Navigation Links -->
+    <div class="btn-group">
+      <a href="https://www.linkedin.com/jobs/" target="_blank" class="btn">
+        💼 Go to Job Search
+      </a>
+      <a href="https://www.linkedin.com/messaging/" target="_blank" class="btn btn-secondary">
+        ✉️ Check Messaging
+      </a>
+    </div>
+
+    <!-- Made in India credits -->
+    <div class="footer-credits">
+      Made with ❤️ by <a href="https://amit-flutter.github.io/" target="_blank">Amit</a> in India
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

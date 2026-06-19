@@ -1,0 +1,632 @@
+/* Hides the LinkedIn Feed Layout when blocker is active */
+body.focusin-blocked .scaffold-layout {
+  display: none !important;
+}
+
+body.focusin-blocked {
+  overflow: hidden !important; /* Prevent scroll on the empty feed page */
+  transition: background-color 0.3s ease;
+}
+
+/* Dashboard Full-screen Overlay Container */
+#focusin-dashboard {
+  position: fixed;
+  top: 52px; /* Sits exactly below LinkedIn's header navigation bar */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: calc(100vh - 52px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 999;
+  font-family: 'Outfit', -apple-system, sans-serif;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 40px 24px;
+  background-color: var(--bg-color);
+  background-image: var(--grid-bg);
+  background-size: 40px 40px;
+  transition: all 0.3s ease;
+}
+
+/* Theme variables for the dashboard */
+#focusin-dashboard.focusin-theme-dark {
+  --bg-color: #0b1329;
+  --card-bg: rgba(20, 27, 45, 0.7);
+  --card-border: rgba(6, 182, 212, 0.15);
+  --text-color: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #06b6d4;
+  --primary-hover: #06f2d4;
+  --accent: #3b82f6;
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --grid-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='rgba(6, 182, 212, 0.08)' stroke-width='1' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  --card-hover-border: rgba(6, 182, 212, 0.35);
+  --card-hover-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);
+}
+
+#focusin-dashboard.focusin-theme-light {
+  --bg-color: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.88);
+  --card-border: rgba(14, 165, 233, 0.18);
+  --text-color: #0f172a;
+  --text-muted: #475569;
+  --primary: #0284c7;
+  --primary-hover: #0369a1;
+  --accent: #2563eb;
+  --shadow: 0 15px 40px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --grid-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='rgba(14, 165, 233, 0.12)' stroke-width='1' stroke-dasharray='4 4'/%3E%3C/svg%3E");
+  --card-hover-border: rgba(14, 165, 233, 0.35);
+  --card-hover-shadow: 0 8px 32px 0 rgba(14, 165, 233, 0.08);
+}
+
+/* 3-Column Responsive Layout */
+.focusin-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 24px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  align-items: start;
+}
+
+/* Glassmorphism Card styles */
+.focusin-glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.focusin-glass-card:hover {
+  border-color: var(--card-hover-border);
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* Sidebars (Widgets) */
+.focusin-sidebar-left,
+.focusin-sidebar-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.focusin-sidebar-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.focusin-sidebar-card:hover {
+  border-color: var(--card-hover-border);
+  transform: translateY(-2px);
+}
+
+.focusin-sidebar-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Fade In Animation */
+.animate-fade-in {
+  animation: focusinFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes focusinFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo Header */
+.focusin-logo-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 20px;
+}
+#focusin-dashboard.focusin-theme-light .focusin-logo-header {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.focusin-header-icon {
+  filter: drop-shadow(0 0 8px var(--primary));
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.focusin-header-text h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+  background: linear-gradient(135deg, var(--text-color) 40%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.focusin-header-text p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+  font-weight: 400;
+}
+
+/* Redesigned Quote Card with Float Letters */
+.focusin-quote-card {
+  position: relative;
+  margin: 24px 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+#focusin-dashboard.focusin-theme-light .focusin-quote-card {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.focusin-quote-card::before {
+  content: "“";
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  font-size: 80px;
+  color: var(--primary);
+  opacity: 0.15;
+  font-family: Georgia, serif;
+  user-select: none;
+}
+
+.focusin-quote-text {
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin: 0 0 12px 0;
+  position: relative;
+  z-index: 2;
+  font-weight: 400;
+}
+
+.focusin-quote-author {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  text-align: right;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.focusin-quote-author::before {
+  content: "🎯";
+  font-size: 12px;
+}
+
+/* Scoreboard */
+.focusin-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.focusin-score-item {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+#focusin-dashboard.focusin-theme-light .focusin-score-item {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+.focusin-score-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
+}
+#focusin-dashboard.focusin-theme-light .focusin-score-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.focusin-score-val {
+  font-size: 28px;
+  font-weight: 700;
+  display: block;
+  color: var(--primary);
+  text-shadow: 0 0 12px rgba(6, 242, 212, 0.2);
+}
+#focusin-dashboard.focusin-theme-light .focusin-score-val {
+  text-shadow: none;
+}
+
+.focusin-score-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* Interactive Daily Checklist */
+.focusin-tasks {
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.focusin-tasks h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 14px 0;
+  letter-spacing: 0.3px;
+}
+
+.focusin-task-item {
+  margin-bottom: 12px;
+}
+
+.focusin-checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 32px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-muted);
+  user-select: none;
+  line-height: 20px;
+  transition: color 0.2s ease;
+}
+
+.focusin-checkbox-container:hover {
+  color: var(--text-color);
+}
+
+.focusin-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.focusin-checkbox-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+#focusin-dashboard.focusin-theme-light .focusin-checkbox-checkmark {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.focusin-checkbox-container:hover input ~ .focusin-checkbox-checkmark {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary);
+}
+
+.focusin-checkbox-container input:checked ~ .focusin-checkbox-checkmark {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}
+
+.focusin-checkbox-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.focusin-checkbox-container input:checked ~ .focusin-checkbox-checkmark:after {
+  display: block;
+}
+
+.focusin-checkbox-container .focusin-checkbox-checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.focusin-checkbox-container input:checked {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Action Buttons & Alignment Fixes */
+.focusin-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.focusin-btn {
+  flex: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.focusin-btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #1e40af 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(3, 105, 161, 0.3);
+  border: none !important;
+}
+
+.focusin-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(3, 105, 161, 0.45);
+  filter: brightness(1.15);
+}
+
+.focusin-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+#focusin-dashboard.focusin-theme-light .focusin-btn-secondary {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.focusin-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary) !important;
+  color: var(--primary-hover) !important;
+  transform: translateY(-2px);
+}
+#focusin-dashboard.focusin-theme-light .focusin-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--primary) !important;
+}
+
+/* Made in India Footer Credits on Blocker */
+.focusin-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+#focusin-dashboard.focusin-theme-light .focusin-footer {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.focusin-footer a {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.focusin-footer a:hover {
+  text-decoration: underline !important;
+  color: var(--primary-hover) !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+}
+
+/* Left Sidebar: Developer Tools widget list */
+.focusin-tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.focusin-tool-item {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+#focusin-dashboard.focusin-theme-light .focusin-tool-item {
+  background: rgba(0, 0, 0, 0.015);
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+.focusin-tool-item:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--primary) !important;
+  transform: translateX(4px) !important;
+}
+#focusin-dashboard.focusin-theme-light .focusin-tool-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.focusin-tool-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 2px;
+}
+
+.focusin-tool-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.focusin-tool-link {
+  font-size: 11px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.focusin-tool-link:hover {
+  text-decoration: underline;
+}
+
+/* Right Sidebar: Pomodoro Focus Timer Widget */
+.focusin-pomodoro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.focusin-pomo-modes {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.focusin-pomo-mode-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 2px;
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+#focusin-dashboard.focusin-theme-light .focusin-pomo-mode-btn {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.focusin-pomo-mode-btn.active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4) !important;
+}
+
+.focusin-pomo-time {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-color);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  margin: 8px 0;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+}
+#focusin-dashboard.focusin-theme-light .focusin-pomo-time {
+  text-shadow: none;
+}
+
+.focusin-pomo-controls {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.focusin-pomo-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+#focusin-dashboard.focusin-theme-light .focusin-pomo-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.focusin-pomo-btn:hover {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+
+.focusin-pomo-btn-reset {
+  flex: 0 0 auto;
+}
+
+/* Responsive Rules for the Layout Grid */
+@media (max-width: 1120px) {
+  .focusin-layout {
+    grid-template-columns: 240px 1fr;
+  }
+  .focusin-sidebar-right {
+    display: none !important; /* Hide Pomodoro on medium screens */
+  }
+}
+
+@media (max-width: 800px) {
+  .focusin-layout {
+    grid-template-columns: 1fr;
+  }
+  .focusin-sidebar-left {
+    display: none !important; /* Hide Dev tools too on narrow screens */
+  }
+}
